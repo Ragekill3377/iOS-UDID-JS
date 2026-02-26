@@ -5,14 +5,16 @@ const App = Express();
 const Port = 4588;//change to whatever port
 const Host = process.env.HOST || 'https://domain.com';//put ur https domain here
 
-function XorEncrypt(Data, Seed) {//you can decrypt the udid on client side with the same logic and seed
-    const Key = Buffer.from(Seed);
-    const BufferData = Buffer.from(Data, 'utf8');
-    const Encrypted = Buffer.alloc(BufferData.length);
-    for (let i = 0; i < BufferData.length; i++) {
-        Encrypted[i] = BufferData[i] ^ Key[i % Key.length];
+function XorEncrypt(data, seed, salt = 'cbyw6gf4c7oh32d9n') {//you can decrypt the udid on client side with the same logic and seed (i added a salt)
+    const key = Buffer.from(seed);
+    const saltbuf = Buffer.from(salt);
+    const input = Buffer.from(data, 'utf8');
+    const out = Buffer.alloc(input.length);
+    for (let i = 0; i < input.length; i++) {
+        out[i] = input[i] ^ key[i % key.length] ^ saltbuf[i % saltbuf.length];
     }
-    return Encrypted.toString('hex');
+
+    return out.toString('hex');
 }
 
 App.Get('/udid', (Req, Res) => {
@@ -68,7 +70,7 @@ App.Post('/endpoint', Express.raw({ type: '*/*' }), async (Req, Res) => {
         const Values = Parsed.plist.dict[0].string;
         Keys.forEach((K, I) => { if (K === 'UDID') Udid = Values[I]; });
         if (!Udid) return Res.status(400).send('NULL');
-        const EncryptedUdid = XorEncrypt(Udid, 'xraq5950snxhHdndjdiJggsiygw626ok'); 
+        const EncryptedUdid = XorEncrypt(Udid, 'xraq5950snxhHdndjdiJggsiygw626ok');//returns the encrypted udid
         Res.writeHead(301, { Location: `myapp://udid?value=${EncryptedUdid}` });// replace myapp:// with the cfbundleurlscheme of your ios app
         Res.end();//the request back must be a 301 or else it will not work
     } catch {
