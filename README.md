@@ -13,7 +13,7 @@ An extremely simple JavaScript app which is hosted on a site and can be used in 
 
 -> use node to run the app
 
--> in your ios app, use the apis to open the host you're running the app on e.g: if thr host is udidget.com, you will send a request to udidget.com/udid
+-> in your ios app, use the apis to open the host you're running the app on e.g: if the host is udidget.com, you will send a request to udidget.com/udid
 
 -> ios will handle everything from there, and user just has to install profile
 
