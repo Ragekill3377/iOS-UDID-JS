@@ -17,7 +17,7 @@ function XorEncrypt(data, seed, salt = 'cbyw6gf4c7oh32d9n') {//you can decrypt t
     return out.toString('hex');
 }
 
-App.Get('/udid', (Req, Res) => {
+App.get('/udid', (Req, Res) => {
     const MobileConfig = `<?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
@@ -57,7 +57,7 @@ App.Get('/udid', (Req, Res) => {
     Res.send(MobileConfig);
 });
 
-App.Post('/endpoint', Express.raw({ type: '*/*' }), async (Req, Res) => {
+App.post('/endpoint', Express.raw({ type: '*/*' }), async (Req, Res) => {
     try {
         const BodyString = Req.body.toString('utf-8');
         const Start = BodyString.indexOf('<?xml');
@@ -77,7 +77,8 @@ App.Post('/endpoint', Express.raw({ type: '*/*' }), async (Req, Res) => {
         Res.status(500).send('server error, check node error logs please');
     }
 });
-App.Get('/', (Req, Res) => {
+
+App.get('/', (Req, Res) => {
     Res.send(`<h2>Running Fine</h2><a href="/udid">Send Request Here Thru App</a>`);
 });
 
