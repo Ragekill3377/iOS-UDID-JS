@@ -25,6 +25,8 @@ An extremely simple JavaScript app which is hosted on a site and can be used in 
 
 -> at the top of the file, edit the hosts variable to your main website upon which it will run on.
 
+-> edit the salt in the 'XorEncrypt' function.
+
 -> on line 72, change 'myapp://' to the cfbundleurlscheme of your ios app (found in info.plist)
 
 -> optional: change xor implementation to make it harder for tamperers to mess with the udid.
